@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Arduino.h>
-#include <Wire.h>
+//#include <Arduino.h>
+#include "I2Cdev.h"
 
 #define _MCP23017_INTERRUPT_SUPPORT_ ///< Enables support for MCP23017 interrupts.
 
@@ -54,17 +54,17 @@ enum class MCP23017_REGISTER : uint8_t
 inline MCP23017_REGISTER operator+(MCP23017_REGISTER a, MCP23017_PORT b) {
 	return static_cast<MCP23017_REGISTER>(static_cast<uint8_t>(a) + static_cast<uint8_t>(b));
 };
-
+static uint8_t DefaultAdress=0x20;
 class MCP23017
 {
 private:
-	TwoWire* _bus;
 	uint8_t _deviceAddr;
+	uint8_t buffer[2];
 public:
 	/**
 	 * Instantiates a new instance to interact with a MCP23017 at the specified address.
 	 */
-	MCP23017(uint8_t address, TwoWire& bus = Wire);
+	MCP23017(uint8_t address = DefaultAdress);
 	~MCP23017();
 #ifdef _DEBUG
 	void debug();
